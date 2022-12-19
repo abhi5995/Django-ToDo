@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'crud/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container">
+        {% for message in messages %}
+        {% if message.tags == 'success'%}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Student <strong>{{message}}</strong> has been added successfully.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {%endif%}
+        {% if message.tags == 'info'%}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            Student <strong>{{message}}</strong>'s detail updated successfully.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {%endif%}
+        {% if message.tags == 'error'%}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Student <strong>{{message}}</strong> deleted successfully!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {%endif%}
+        {%endfor%}
+        <nav class="navbar navbar-dark bg-dark mt-5">
+            <a class="navbar-brand mx-auto" href="#"> Crud using model form</a>
+        </nav>
+        {% block content %}{% endblock content %}
+    </div>
+    <script src="{% static 'crud/js/jquery.js' %}"></script>
+    <script src="{% static 'crud/js/popper.js' %}"></script>
+    <script src="{% static 'crud/js/bootstrap.js' %}"></script>
+</body>
+</html>

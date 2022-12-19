@@ -1,0 +1,47 @@
+{% extends 'crud/base.html' %} {% load crispy_forms_tags %} {% block content %}
+<div class="row mt-5">
+  <div class="col-sm-4">
+    {% if action == 'Edit'%}
+    <h4 class='text-center alert alert-info'>Edit Student Details</h4>
+      {% else %}
+      <h4 class='text-center alert alert-info'>Add a Student</h4>
+      {% endif %}
+    <form action="" method="POST">
+      {% csrf_token %} {{form.as_p}}
+      {% if action == 'Edit'%}
+      <button type="submit" class="btn btn-success">Update</button>
+      {% else %}
+      <button type="submit" class="btn btn-primary">Add</button>
+      {% endif %}
+    </form>
+  </div>
+  <div class="col-sm-7 offset-1">
+    <h4 class='text-center alert alert-info'>Student Details</h4>
+    <table class="table table-striped mx-auto">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for stu in allstu %}
+          <tr>
+            <th scope="row">{{stu.id}}</th>
+            <td>{{stu.stuname}}</td>
+            <td>{{stu.stuemail}}</td>
+            <td>{{stu.stuphone}}</td>
+            <td><a type="button" class="btn btn-success btn-sm" href="{% url 'edit' stu.id %}">Edit</a>
+                <a type="button" class="btn btn-danger btn-sm" href="{% url 'delete' stu.id %}">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+
+{% endblock content %}
