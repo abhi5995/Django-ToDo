@@ -24,4 +24,6 @@ urlpatterns = [
     path('delete/<int:id>', app1_views.delete,name='delete'),
     path('edit/<int:id>', app1_views.edit,name='edit'),
     path('signup/', project_views.sign_up,name='sign_up'),
+    path('login/', project_views.log_in,name='log_in'),
+    path('logout/', project_views.log_out,name='log_out'),
 ]

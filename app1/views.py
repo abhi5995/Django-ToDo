@@ -12,7 +12,7 @@ def home(req):
         # print(fm)
         if fm.is_valid():
             fm.save()
-            messages.add_message(req, messages.SUCCESS, fm.cleaned_data["stuname"])
+            messages.success(req, f"Student {fm.cleaned_data['stuname']} has been added successfully.")
         fm = AddStudent()
         return HttpResponseRedirect(reverse('home'))
     else:
@@ -23,7 +23,7 @@ def delete(req, id):
     stu = Student.objects.get(pk=id)
     nm = stu.stuname
     stu.delete()
-    messages.error(req, nm)
+    messages.error(req, f"Student {nm} has been deleted successfully.")
     return HttpResponseRedirect(reverse('home'))
 def edit(req, id):
     allStudent = Student.objects.all()
@@ -32,7 +32,7 @@ def edit(req, id):
         fm = AddStudent(req.POST, instance=stu)
         if fm.is_valid():
             fm.save()
-            messages.info(req, fm.cleaned_data["stuname"])
+            messages.info(req, f"Student {fm.cleaned_data['stuname']}'s detail has been updated successfully.")
         fm = AddStudent()
         return HttpResponseRedirect(reverse('home'))
     else:
