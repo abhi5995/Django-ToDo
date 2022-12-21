@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django import forms
 
@@ -24,3 +24,8 @@ class UserRegistrationForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), label='Username')
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), label='Password')
+
+class ChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), label='Old Password')
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), label='New Password')
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}), label='Confirm ew Password')

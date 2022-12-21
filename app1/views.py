@@ -6,36 +6,43 @@ from django.contrib import messages
 
 # Create your views here.
 def home(req):
-    allStudent = Student.objects.all()
-    if req.method=='POST':
-        fm = AddStudent(req.POST)
-        # print(fm)
-        if fm.is_valid():
-            fm.save()
-            messages.success(req, f"Student {fm.cleaned_data['stuname']} has been added successfully.")
-        fm = AddStudent()
-        return HttpResponseRedirect(reverse('home'))
-    else:
-        fm = AddStudent()
-    return render(req, 'crud/home.html', {'form':fm, 'allstu':allStudent, 'action':'Add'})
+    if req.user.is_authenticated:
+        allStudent = Student.objects.all()
+        if req.method=='POST':
+            fm = AddStudent(req.POST)
+            # print(fm)
+            if fm.is_valid():
+                fm.save()
+                messages.success(req, f"Student {fm.cleaned_data['stuname']} has been added successfully.")
+            fm = AddStudent()
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            fm = AddStudent()
+        return render(req, 'crud/home.html', {'form':fm, 'allstu':allStudent, 'action':'Add'})
+    return HttpResponseRedirect(reverse('log_in'))
 
 def delete(req, id):
-    stu = Student.objects.get(pk=id)
-    nm = stu.stuname
-    stu.delete()
-    messages.error(req, f"Student {nm} has been deleted successfully.")
-    return HttpResponseRedirect(reverse('home'))
-def edit(req, id):
-    allStudent = Student.objects.all()
-    stu = Student.objects.get(pk=id)
-    if req.method=='POST':
-        fm = AddStudent(req.POST, instance=stu)
-        if fm.is_valid():
-            fm.save()
-            messages.info(req, f"Student {fm.cleaned_data['stuname']}'s detail has been updated successfully.")
-        fm = AddStudent()
+    if req.user.is_authenticated:
+        stu = Student.objects.get(pk=id)
+        nm = stu.stuname
+        stu.delete()
+        messages.error(req, f"Student {nm} has been deleted successfully.")
         return HttpResponseRedirect(reverse('home'))
-    else:
-        fm = AddStudent(instance=stu)
-        action = 'Edit'
-    return render(req, 'crud/home.html', {'form':fm, 'allstu':allStudent, 'action':action})
+    return HttpResponseRedirect(reverse('log_in'))
+
+def edit(req, id):
+    if req.user.is_authenticated:
+        allStudent = Student.objects.all()
+        stu = Student.objects.get(pk=id)
+        if req.method=='POST':
+            fm = AddStudent(req.POST, instance=stu)
+            if fm.is_valid():
+                fm.save()
+                messages.info(req, f"Student {fm.cleaned_data['stuname']}'s detail has been updated successfully.")
+            fm = AddStudent()
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            fm = AddStudent(instance=stu)
+            action = 'Edit'
+        return render(req, 'crud/home.html', {'form':fm, 'allstu':allStudent, 'action':action})
+    return HttpResponseRedirect(reverse('log_in'))
